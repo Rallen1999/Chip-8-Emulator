@@ -31,8 +31,17 @@ private:
 
   void OP_00E0();
   void OP_00EE();
+  void OP_1nnn();
   void OP_3xkk();
   void OP_2nnn();
   void OP_4xkk();
   void OP_5xy0();
+  void OP_6xkk();
+  void OP_7xkk();
+  void OP_8xy0();
+  void OP_8xy1();
+  void OP_8xy2();
+  void OP_8xy3();
+  void OP_8xy4();
+  void OP_8xy5();
 };

@@ -57,17 +57,29 @@ void Chip8::OP_00E0() {
 }
 
 void Chip8::OP_00EE() {
+  // Return from a subroutine
   --sp;
   pc = stack[sp];
 }
+
+void Chip8::OP_1nnn() {
+  // Jump to location nnn
+  uint16_t address = opcode & 0x0FFFu;
+
+  pc = address;
+}
+
 void Chip8::OP_2nnn() {
+  // Call subroutine at nnn
   uint16_t address = opcode & 0x0FFFu;
 
   stack[sp] = pc;
   ++sp;
   pc = address;
 }
+
 void Chip8::OP_3xkk() {
+  // Skip next instructions if Vx = kk
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t byte = opcode & 0x00FFu;
 
@@ -75,7 +87,9 @@ void Chip8::OP_3xkk() {
     pc += 2;
   }
 }
+
 void Chip8::OP_4xkk() {
+  // Skip next instructions if Vx != kk
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t byte = opcode & 0x00FFu;
 
@@ -83,11 +97,90 @@ void Chip8::OP_4xkk() {
     pc += 2;
   }
 }
+
 void Chip8::OP_5xy0() {
+  // Skip next instructions if Vx= Vy
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t Vy = (opcode & 0x00F0u) >> 4u;
 
   if (registers[Vx] == registers[Vy]) {
     pc += 2;
   }
+}
+
+void Chip8::OP_6xkk() {
+  // Set Vx = kk
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t byte = opcode & 0x00FFu;
+
+  registers[Vx] = byte;
+}
+
+void Chip8::OP_7xkk() {
+  // Set Vx = Vx + kk
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t byte = opcode & 0x00FFu;
+  registers[Vx] += byte;
+}
+
+void Chip8::OP_8xy0() {
+  // Set Vx = Vy
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  registers[Vx] = registers[Vy];
+}
+
+void Chip8::OP_8xy1() {
+  // Set Vx = Vx or Vy
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  registers[Vx] |= registers[Vy];
+}
+
+void Chip8::OP_8xy2() {
+  // Set Vx = Vx AND Vy
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  registers[Vx] &= registers[Vy];
+}
+
+void Chip8::OP_8xy3() {
+  // Set Vx = Vx XOR Vy
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  registers[Vx] ^= registers[Vy];
+}
+
+void Chip8::OP_8xy4() {
+  // Set Vx = Vx + Vy. Set VF = carry
+  // If Sum is greater than 255 (8 bits/1 byte) set VF = 1, else, set VF = 0
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  uint16_t sum = registers[Vx] + registers[Vy];
+
+  if (sum > 255u) {
+    registers[0xF] = 1;
+  } else {
+    registers[0xF] = 0;
+  }
+  registers[Vx] = sum & 0xFFu;
+}
+
+void Chip8::OP_8xy5() {
+  // Set Vx = Vx - Vy. Set VF = NOT borrow
+  // If Vx > Vy, set VF = 1 else, set VF = 0
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+  if (registers[Vx] > registers[Vy]) {
+    registers[0xF] = 1;
+  } else {
+    registers[0xF] = 0;
+  }
+  registers[Vx] -= registers[Vy];
 }
