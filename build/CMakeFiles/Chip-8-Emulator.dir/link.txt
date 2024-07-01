@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Chip-8-Emulator.dir/src/chip8.cpp.o CMakeFiles/Chip-8-Emulator.dir/src/main.cpp.o -o Chip-8-Emulator 

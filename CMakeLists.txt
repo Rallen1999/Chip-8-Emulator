@@ -7,7 +7,9 @@ project(Chip-8-Emulator
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-
-set(SOURCE_FILES ./src/main.cpp ./src/chip8.cpp ./headers/)
-add_executable(chip-8-emu ${SOURCE_FILES})
+find_package(SDL3 REQUIRED)
+file(GLOB SRC_FILES
+  "./src/*.cpp"
+  "./src/*.h"
+  )
+add_executable(${PROJECT_NAME} ${SRC_FILES})
