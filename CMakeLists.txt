@@ -1,15 +1,22 @@
 cmake_minimum_required(VERSION 3.22)
+
 project(Chip-8-Emulator
   DESCRIPTION "A simple Chip-8-Emulator"
   LANGUAGES CXX
   )
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
 
-find_package(SDL3 REQUIRED)
-file(GLOB SRC_FILES
-  "./src/*.cpp"
-  "./src/*.h"
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(Chip-8-Emulator
+  ./src/chip8.cpp
+  ./src/main.cpp
+  ./src/platform.cpp
   )
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+
+target_include_directories(Chip-8-Emulator PUBLIC headers/)
+
+target_link_libraries(Chip-8-Emulator PRIVATE SDL2::SDL2)
+
