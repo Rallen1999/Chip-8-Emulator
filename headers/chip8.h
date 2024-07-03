@@ -15,7 +15,7 @@ public:
   void Cycle();
   void LoadROM(char const *filename);
   uint8_t keypad[KEY_COUNT]{};
-  uint32_t video[DISPLAY_Height * DISPLAY_Width]{};
+  uint32_t video[DISPLAY_Width * DISPLAY_Height]{};
 
 private:
   std::default_random_engine randGen;
