@@ -3,6 +3,8 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_video.h>
 #include <sys/types.h>
 
 Platform::Platform(char const *title, int windowWidth, int windowHeight,
@@ -10,7 +12,7 @@ Platform::Platform(char const *title, int windowWidth, int windowHeight,
   SDL_Init(SDL_INIT_VIDEO);
 
   window = SDL_CreateWindow(title, 0, 0, windowWidth, windowHeight,
-                            SDL_WINDOW_SHOWN);
+                            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 

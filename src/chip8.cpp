@@ -344,7 +344,7 @@ void Chip8::OP_Dxyn() {
   // collision
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-  uint8_t height = opcode & 0x00Fu;
+  uint8_t height = opcode & 0x000Fu;
 
   uint8_t xPos = registers[Vx] % DISPLAY_Width;
   uint8_t yPos = registers[Vy] % DISPLAY_Height;
@@ -362,9 +362,8 @@ void Chip8::OP_Dxyn() {
       if (spritePixel) {
         if (*screenPixel == 0xFFFFFFFF) {
           registers[0xF] = 1;
-
-          *screenPixel ^= 0xFFFFFFFF;
         }
+        *screenPixel ^= 0xFFFFFFFF;
       }
     }
   }

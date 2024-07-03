@@ -3,6 +3,11 @@
 #include <SDL2/SDL_video.h>
 #include <cstdint>
 #include <stdint.h>
+
+class SDL_Window;
+class SDL_Renderer;
+class SDL_Texture;
+
 class Platform {
 public:
   Platform(char const *title, int windowWidth, int windowHeight,
