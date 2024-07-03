@@ -16,7 +16,6 @@ public:
   void LoadROM(char const *filename);
   uint8_t keypad[KEY_COUNT]{};
   uint32_t video[DISPLAY_Height * DISPLAY_Width]{};
-  uint16_t opcode{};
 
 private:
   std::default_random_engine randGen;
@@ -69,6 +68,7 @@ private:
   uint8_t sp{};
   uint8_t delayTimer{};
   uint8_t soundTimer{};
+  uint16_t opcode{};
   typedef void (Chip8::*Chip8Func)();
   Chip8Func table[0xF + 1];
   Chip8Func table0[0xE + 1];

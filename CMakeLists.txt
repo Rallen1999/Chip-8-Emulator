@@ -19,4 +19,3 @@ add_executable(Chip-8-Emulator
 target_include_directories(Chip-8-Emulator PUBLIC headers/)
 
 target_link_libraries(Chip-8-Emulator PRIVATE SDL2::SDL2)
-

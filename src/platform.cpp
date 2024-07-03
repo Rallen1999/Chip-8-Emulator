@@ -22,9 +22,17 @@ Platform::~Platform() {
   SDL_DestroyTexture(texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
+  SDL_Quit();
 }
 
-bool ProcessInput(u_int8_t *keys) {
+void Platform::Update(void const *buffer, int pitch) {
+  SDL_UpdateTexture(texture, nullptr, buffer, pitch);
+  SDL_RenderClear(renderer);
+  SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+  SDL_RenderPresent(renderer);
+}
+
+bool Platform::ProcessInput(u_int8_t *keys) {
   bool quit = false;
 
   SDL_Event event;

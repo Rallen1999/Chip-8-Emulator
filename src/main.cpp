@@ -2,6 +2,7 @@
 #include "../headers/platform.h"
 #include <chrono>
 #include <iostream>
+
 int main(int argc, char **argv) {
   if (argc != 4) {
     std::cerr << "Usage: " << argv[0] << " <Scale> <Delay> <ROM>\n";

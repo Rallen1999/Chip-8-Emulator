@@ -37,7 +37,7 @@ Chip8::Chip8()
     memory[FONTSET_START_ADDRESS + i] = fontset[i];
   }
 
-  randByte = std::uniform_int_distribution<uint8_t>(0, 255u);
+  randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
 
   table[0x0] = &Chip8::Table0;
   table[0x1] = &Chip8::OP_1nnn;
@@ -139,7 +139,7 @@ void Chip8::TableE() { ((*this).*(tableE[opcode & 0x000Fu]))(); }
 
 void Chip8::TableF() { ((*this).*(tableF[opcode & 0x000Fu]))(); }
 
-void OP_NULL() {}
+void Chip8::OP_NULL() {}
 
 void Chip8::OP_00E0() {
   // clear display
@@ -173,7 +173,7 @@ void Chip8::OP_3xkk() {
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t byte = opcode & 0x00FFu;
 
-  if (registers[Vx] != byte) {
+  if (registers[Vx] == byte) {
     pc += 2;
   }
 }
@@ -253,7 +253,7 @@ void Chip8::OP_8xy4() {
 
   uint16_t sum = registers[Vx] + registers[Vy];
 
-  if (sum > 255u) {
+  if (sum > 255U) {
     registers[0xF] = 1;
   } else {
     registers[0xF] = 0;
@@ -344,7 +344,7 @@ void Chip8::OP_Dxyn() {
   // collision
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
   uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-  uint8_t height = opcode & 0x00F0u;
+  uint8_t height = opcode & 0x00Fu;
 
   uint8_t xPos = registers[Vx] % DISPLAY_Width;
   uint8_t yPos = registers[Vy] % DISPLAY_Height;
@@ -461,6 +461,19 @@ void Chip8::OP_Fx29() {
   index = FONTSET_START_ADDRESS + (5 * digit);
 }
 
+void Chip8::OP_Fx33() {
+  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+  uint8_t value = registers[Vx];
+
+  memory[index + 2] = value % 10;
+  value /= 10;
+
+  memory[index + 1] = value % 10;
+  value /= 10;
+
+  memory[index] = value % 10;
+}
+
 void Chip8::OP_Fx55() {
   uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 
@@ -474,17 +487,4 @@ void Chip8::OP_Fx65() {
   for (uint8_t i = 0; i <= Vx; i++) {
     registers[i] = memory[index + i];
   }
-}
-
-void Chip8::OP_Fx33() {
-  uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-  uint8_t value = registers[Vx];
-
-  memory[index + 2] = value % 10;
-  value /= 10;
-
-  memory[index + 1] = value % 10;
-  value /= 10;
-
-  memory[index] = value % 10;
 }
