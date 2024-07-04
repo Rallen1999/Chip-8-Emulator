@@ -14,6 +14,6 @@ cmake ..
 
 make
 
-run ./Chip-8-Emulator 10 1 directory/to/romfile
+run ./Chip-8-Emulator "What you want the window scale to be-integer" "Delay-integer" directory/to/romfile
 
 [ROMs for Chip-8-Emulator](https://github.com/dmatlack/chip8/tree/master/roms/games)
